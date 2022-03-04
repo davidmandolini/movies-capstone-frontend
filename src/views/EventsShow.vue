@@ -3,18 +3,18 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      showGroupParams: {},
-      events: [],
+      showEventParams: {},
+      nominations: [],
     };
   },
   created: function () {
-    this.groupsShow();
+    this.eventsShow();
   },
   methods: {
-    groupsShow() {
-      axios.get("/groups/" + this.$route.params.id).then((response) => {
-        this.showGroupParams = response.data;
-        this.events = response.data.events;
+    eventsShow() {
+      axios.get("/events/" + this.$route.params.id).then((response) => {
+        this.showEventParams = response.data;
+        this.nominations = response.data.nominations;
         console.log(response.data);
       });
     },
@@ -24,10 +24,10 @@ export default {
 
 <template>
   <div class="home">
-    <h1>{{ showGroupParams.name }}</h1>
-    <h2>Events:</h2>
-    <div v-for="event in events" :key="event.id">
-      <a :href="`/events/` + `${event.id}`">{{ event.name }}</a>
+    <h1>{{ showEventParams.name }}</h1>
+    <h2>Nominations:</h2>
+    <div v-for="nomination in nominations" :key="nomination.id">
+      <a :href="`/nominations/` + `${nomination.id}`">{{ nomination.name }}</a>
     </div>
   </div>
 </template>
