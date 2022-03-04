@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Signup from "../views/Signup.vue";
 import Login from "../views/Login.vue";
+import Logout from "../views/Logout.vue";
 import GroupsIndex from "../views/GroupsIndex.vue";
 import GroupsShow from "../views/GroupsShow.vue";
 import EventsIndex from "../views/EventsIndex.vue";
@@ -26,6 +27,7 @@ const routes = [
     name: "Login",
     component: Login,
   },
+  { path: "/logout", name: "logout", component: Logout },
   {
     path: "/groups",
     name: "GroupsIndex",
