@@ -22,9 +22,13 @@ export default {
         console.log(response.data.nominations);
       });
     },
+    nominateMovie() {
+      document.querySelector("#nomination-new").showModal();
+    },
     nominationsCreate() {
       axios.post("/nominations", this.newNominationParams).then((response) => {
         this.newNominationParams = response.data;
+        this.nominations.push(response.data);
         console.log(response.data);
       });
     },
@@ -35,22 +39,29 @@ export default {
 <template>
   <div class="home">
     <h1>{{ showEventParams.name }}</h1>
-    <h2>Nominate A Movie!</h2>
-    <div>
-      <p>
-        Name:
-        <input v-model="newNominationParams.name" />
-      </p>
-      <p>
-        Trailer URL:
-        <input v-model="newNominationParams.trailer_url" />
-      </p>
-      <button v-on:click="nominationsCreate()">Submit</button>
-    </div>
+    <button v-on:click="nominateMovie()">Nominate A Movie!</button>
+
     <h2>Current Nominations:</h2>
     <div v-for="nomination in nominations" :key="nomination.id">
       <a :href="`/nominations/` + `${nomination.id}`">{{ nomination.name }}</a>
+      <span>&nbsp;Votes: {{ nomination.votes.length }}</span>
     </div>
+    <dialog id="nomination-new">
+      <form method="dialog">
+        <div>
+          <p>
+            Name:
+            <input v-model="newNominationParams.name" />
+          </p>
+          <p>
+            Trailer URL:
+            <input v-model="newNominationParams.trailer_url" />
+          </p>
+          <button v-on:click="nominationsCreate()">Submit</button>
+          <button>Close</button>
+        </div>
+      </form>
+    </dialog>
   </div>
 </template>
 

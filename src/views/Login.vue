@@ -32,9 +32,7 @@ export default {
   <div class="login">
     <form v-on:submit.prevent="submit()">
       <h1>Login</h1>
-      <ul>
-        <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
-      </ul>
+      <h2 v-for="error in errors" v-bind:key="error">{{ error }}</h2>
       <div>
         <label>Email:</label>
         <input type="email" v-model="newSessionParams.email" />

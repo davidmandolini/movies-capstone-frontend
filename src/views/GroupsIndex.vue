@@ -3,6 +3,7 @@ import axios from "axios";
 export default {
   data: function () {
     return {
+      error: {},
       groups: [],
     };
   },
@@ -11,9 +12,14 @@ export default {
   },
   methods: {
     groupsIndex() {
-      axios.get("/groups").then((response) => {
-        this.groups = response.data;
-      });
+      axios
+        .get("/groups")
+        .then((response) => {
+          this.groups = response.data;
+        })
+        .catch((error) => {
+          this.error = error.response;
+        });
     },
   },
 };
@@ -21,7 +27,8 @@ export default {
 
 <template>
   <div class="home">
-    <h1>Your Groups</h1>
+    <h1 v-if="error.status">{{ error.status }}: {{ error.statusText }}</h1>
+    <h1 v-else>Your Groups</h1>
     <div v-for="group in groups" :key="group.id">
       <a :href="`/groups/` + `${group.id}`">{{ group.name }}</a>
     </div>
