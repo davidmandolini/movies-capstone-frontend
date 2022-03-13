@@ -3,6 +3,8 @@ import axios from "axios";
 export default {
   data: function () {
     return {
+      searchParams: "",
+      searches: [],
       showEventParams: {},
       nominations: [],
       newNominationParams: {
@@ -22,8 +24,15 @@ export default {
         console.log(response.data.nominations);
       });
     },
-    nominateMovie() {
+    searchMovie() {
       document.querySelector("#nomination-new").showModal();
+      axios.get("/searches?expression=" + this.searchParams).then((response) => {
+        console.log(this.searchParams);
+
+        this.searches = response.data.results;
+        console.log(response.data.results);
+        this.searchParams = "";
+      });
     },
     nominationsCreate() {
       axios.post("/nominations", this.newNominationParams).then((response) => {
@@ -39,7 +48,9 @@ export default {
 <template>
   <div class="home">
     <h1>{{ showEventParams.name }}</h1>
-    <button v-on:click="nominateMovie()">Nominate A Movie!</button>
+    <h2>Add Nomination</h2>
+    <input type="text" v-model="searchParams" />
+    <button v-on:click="searchMovie()">Search</button>
 
     <h2>Current Nominations:</h2>
     <div v-for="nomination in nominations" :key="nomination.id">
@@ -49,14 +60,8 @@ export default {
     <dialog id="nomination-new">
       <form method="dialog">
         <div>
-          <p>
-            Name:
-            <input v-model="newNominationParams.name" />
-          </p>
-          <p>
-            Trailer URL:
-            <input v-model="newNominationParams.trailer_url" />
-          </p>
+          <h2>Select from the search results</h2>
+          <div v-for="search in searches" v-bind:key="search">{{ search.title }}</div>
           <button v-on:click="nominationsCreate()">Submit</button>
           <button>Close</button>
         </div>

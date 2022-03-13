@@ -24,6 +24,7 @@ export default {
       axios.post("/votes", this.newVoteParams).then((response) => {
         this.newVoteParams = response.data;
         console.log(response.data);
+        this.$router.push("/events/" + this.showNominationParams.event_id);
       });
     },
   },
@@ -36,7 +37,7 @@ export default {
     <div>
       <p>Name: {{ showNominationParams.name }}</p>
       <p>Trailer URL: {{ showNominationParams.trailer_url }}</p>
-      <button v-on:click="votesCreate()">Vote for this!</button>
+      <button v-on:click="votesCreate()">Vote for {{ showNominationParams.name }}!</button>
     </div>
   </div>
 </template>
