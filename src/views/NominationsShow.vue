@@ -33,10 +33,20 @@ export default {
 
 <template>
   <div class="home">
-    <h1>{{ showNominationParams.name }}</h1>
+    <h1>{{ showNominationParams.name }} ({{ showNominationParams.year }})</h1>
     <div>
-      <p>Name: {{ showNominationParams.name }}</p>
-      <p>Trailer URL: {{ showNominationParams.trailer_url }}</p>
+      <p>Rated: {{ showNominationParams.rating }}</p>
+      <p>Genre: {{ showNominationParams.genre }}</p>
+      <p>Runtime: {{ showNominationParams.runtime }}</p>
+      <p>Directed by: {{ showNominationParams.director }}</p>
+      <p>IMDB Rating: {{ showNominationParams.imdb_rating }}</p>
+      <p>Metascore: {{ showNominationParams.metacritic_rating }}</p>
+      <p>Plot: {{ showNominationParams.plot }}</p>
+      <p>
+        <a :href="`https://www.youtube.com/results?search_query=trailer+${showNominationParams.name}`" target="_blank">
+          Find Trailer
+        </a>
+      </p>
       <button v-on:click="votesCreate()">Vote for {{ showNominationParams.name }}!</button>
     </div>
   </div>

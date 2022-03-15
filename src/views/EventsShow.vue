@@ -37,14 +37,10 @@ export default {
     nominationsCreate(search) {
       this.newNominationParams.name = search.title;
       axios.post("/nominations", this.newNominationParams).then((response) => {
-        console.log(search.title);
-        console.log(this.newNominationParams);
         this.newNominationParams = {
           event_id: this.$route.params.id,
         };
         this.nominations.push(response.data);
-        console.log(response);
-        console.log(response.data);
       });
     },
   },
@@ -71,9 +67,6 @@ export default {
             <p></p>
             {{ search.title }}
             <span>
-              <a :href="`https://www.youtube.com/results?search_query=trailer+${search.title}`" target="_blank">
-                Find Trailer
-              </a>
               <button v-on:click="nominationsCreate(search)">Nominate</button>
             </span>
           </div>
@@ -86,7 +79,7 @@ export default {
 </template>
 
 <style>
-a:visited{
-  color:blue;
+a:visited {
+  color: blue;
 }
 </style>
