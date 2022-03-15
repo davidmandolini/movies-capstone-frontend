@@ -11,6 +11,7 @@ export default {
         event_id: this.$route.params.id,
       },
       errors: [],
+      loading: true,
     };
   },
   created: function () {
@@ -26,18 +27,23 @@ export default {
     },
     searchMovie() {
       document.querySelector("#nomination-new").showModal();
-      axios.get("/searches?expression=" + this.searchParams).then((response) => {
+      axios.get("/searches/" + this.searchParams).then((response) => {
         console.log(this.searchParams);
-
         this.searches = response.data.results;
         console.log(response.data.results);
         this.searchParams = "";
       });
     },
-    nominationsCreate() {
+    nominationsCreate(search) {
+      this.newNominationParams.name = search.title;
       axios.post("/nominations", this.newNominationParams).then((response) => {
-        this.newNominationParams = response.data;
+        console.log(search.title);
+        console.log(this.newNominationParams);
+        this.newNominationParams = {
+          event_id: this.$route.params.id,
+        };
         this.nominations.push(response.data);
+        console.log(response);
         console.log(response.data);
       });
     },
@@ -60,9 +66,18 @@ export default {
     <dialog id="nomination-new">
       <form method="dialog">
         <div>
-          <h2>Select from the search results</h2>
-          <div v-for="search in searches" v-bind:key="search">{{ search.title }}</div>
-          <button v-on:click="nominationsCreate()">Submit</button>
+          <h2>Select from the {{ searches.length }} search result(s)</h2>
+          <div v-for="search in searches" v-bind:key="search">
+            <p></p>
+            {{ search.title }}
+            <span>
+              <a :href="`https://www.youtube.com/results?search_query=trailer+${search.title}`" target="_blank">
+                Find Trailer
+              </a>
+              <button v-on:click="nominationsCreate(search)">Nominate</button>
+            </span>
+          </div>
+          <p></p>
           <button>Close</button>
         </div>
       </form>
@@ -70,4 +85,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style>
+a:visited{
+  color:blue;
+}
+</style>

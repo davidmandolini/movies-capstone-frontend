@@ -32,4 +32,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style>
+a:visited {
+  color: blue;
+}
+</style>

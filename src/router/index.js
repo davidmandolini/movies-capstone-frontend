@@ -5,10 +5,7 @@ import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
 import GroupsIndex from "../views/GroupsIndex.vue";
 import GroupsShow from "../views/GroupsShow.vue";
-import EventsIndex from "../views/EventsIndex.vue";
 import EventsShow from "../views/EventsShow.vue";
-import NominationsIndex from "../views/NominationsIndex.vue";
-import NominationsNew from "../views/NominationsNew.vue";
 import NominationsShow from "../views/NominationsShow.vue";
 
 const routes = [
@@ -39,25 +36,11 @@ const routes = [
     component: GroupsShow,
   },
   {
-    path: "/events",
-    name: "EventsIndex",
-    component: EventsIndex,
-  },
-  {
     path: "/events/:id",
     name: "EventsShow",
     component: EventsShow,
   },
-  {
-    path: "/nominations",
-    name: "NominationsIndex",
-    component: NominationsIndex,
-  },
-  {
-    path: "/nominations/new",
-    name: "NominationsNew",
-    component: NominationsNew,
-  },
+
   {
     path: "/nominations/:id",
     name: "NominationsShow",
