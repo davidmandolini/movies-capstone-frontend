@@ -65,7 +65,7 @@ export default {
           <h2>Select from the {{ searches.length }} search result(s)</h2>
           <div v-for="search in searches" v-bind:key="search">
             <p></p>
-            {{ search.title }}
+            {{ search.title }} {{ search.description }}
             <span>
               <button v-on:click="nominationsCreate(search)">Nominate</button>
             </span>

@@ -39,12 +39,18 @@ export default {
       <p>Genre: {{ showNominationParams.genre }}</p>
       <p>Runtime: {{ showNominationParams.runtime }}</p>
       <p>Directed by: {{ showNominationParams.director }}</p>
-      <p>IMDB Rating: {{ showNominationParams.imdb_rating }}</p>
-      <p>Metascore: {{ showNominationParams.metacritic_rating }}</p>
+      <p>
+        IMDB Rating: {{ showNominationParams.imdb_rating }}, Metascore: {{ showNominationParams.metacritic_rating }}
+      </p>
       <p>Plot: {{ showNominationParams.plot }}</p>
       <p>
+        Find
         <a :href="`https://www.youtube.com/results?search_query=trailer+${showNominationParams.name}`" target="_blank">
-          Find Trailer
+          Trailer
+        </a>
+        or
+        <a :href="`https://www.justwatch.com/us/search?q=${showNominationParams.name}`" target="_blank">
+          Streaming Service
         </a>
       </p>
       <button v-on:click="votesCreate()">Vote for {{ showNominationParams.name }}!</button>
