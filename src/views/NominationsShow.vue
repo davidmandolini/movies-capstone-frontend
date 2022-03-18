@@ -24,8 +24,6 @@ export default {
       axios
         .patch("/nominations/" + this.$route.params.id, this.showNominationParams)
         .then((response) => {
-          console.log(this.showNominationParams);
-          console.log("hi");
           console.log(response.data);
         })
         .catch((error) => {
@@ -48,6 +46,13 @@ export default {
 
 <template>
   <div class="home">
+    <div v-if="showNominationParams.trailer_url && showNominationParams.trailer_url.length > 0">
+      <iframe
+        width="620"
+        height="415"
+        :src="`https://www.youtube.com/embed/${this.showNominationParams.youtube_id}`"
+      ></iframe>
+    </div>
     <h1>{{ showNominationParams.name }} ({{ showNominationParams.year }})</h1>
     <div>
       <p>Rated: {{ showNominationParams.rating }}</p>
