@@ -20,12 +20,27 @@ export default {
         console.log(response.data);
       });
     },
+    nominationsUpdate() {
+      axios
+        .patch("/nominations/" + this.$route.params.id, this.showNominationParams)
+        .then((response) => {
+          console.log(this.showNominationParams);
+          console.log("hi");
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     votesCreate() {
       axios.post("/votes", this.newVoteParams).then((response) => {
         this.newVoteParams = response.data;
         console.log(response.data);
         this.$router.push("/events/" + this.showNominationParams.event_id);
       });
+    },
+    findTrailer() {
+      document.querySelector("#trailer-find").showModal();
     },
   },
 };
@@ -45,7 +60,11 @@ export default {
       <p>Plot: {{ showNominationParams.plot }}</p>
       <p>
         Find
-        <a :href="`https://www.youtube.com/results?search_query=trailer+${showNominationParams.name}`" target="_blank">
+        <a
+          :href="`https://www.youtube.com/results?search_query=trailer+${this.showNominationParams.name}`"
+          target="_blank"
+          v-on:click="findTrailer()"
+        >
           Trailer
         </a>
         or
@@ -55,7 +74,26 @@ export default {
       </p>
       <button v-on:click="votesCreate()">Vote for {{ showNominationParams.name }}!</button>
     </div>
+    <dialog id="trailer-find">
+      <form method="dialog">
+        <div>
+          <h2>Add or update the movie trailer</h2>
+          <div>
+            <p>
+              Trailer URL:
+              <input v-model="showNominationParams.trailer_url" />
+            </p>
+            <span>
+              <button v-on:click="nominationsUpdate()">Submit</button>
+            </span>
+          </div>
+
+          <button>Close</button>
+        </div>
+      </form>
+    </dialog>
   </div>
 </template>
 
 <style></style>
+-->
