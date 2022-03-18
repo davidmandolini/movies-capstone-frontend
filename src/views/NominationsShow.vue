@@ -46,6 +46,8 @@ export default {
 
 <template>
   <div class="home">
+    <h1>{{ showNominationParams.name }} ({{ showNominationParams.year }})</h1>
+
     <div v-if="showNominationParams.trailer_url && showNominationParams.trailer_url.length > 0">
       <iframe
         width="620"
@@ -53,7 +55,6 @@ export default {
         :src="`https://www.youtube.com/embed/${this.showNominationParams.youtube_id}`"
       ></iframe>
     </div>
-    <h1>{{ showNominationParams.name }} ({{ showNominationParams.year }})</h1>
     <div>
       <p>Rated: {{ showNominationParams.rating }}</p>
       <p>Genre: {{ showNominationParams.genre }}</p>
@@ -90,10 +91,9 @@ export default {
             </p>
             <span>
               <button v-on:click="nominationsUpdate()">Submit</button>
+              <button>Close</button>
             </span>
           </div>
-
-          <button>Close</button>
         </div>
       </form>
     </dialog>
