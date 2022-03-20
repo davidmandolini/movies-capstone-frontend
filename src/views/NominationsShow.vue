@@ -7,6 +7,7 @@ export default {
       newVoteParams: {
         nomination_id: this.$route.params.id,
       },
+      embedded_trailer: "",
       errors: [],
     };
   },
@@ -21,6 +22,7 @@ export default {
       });
     },
     nominationsUpdate() {
+      this.showNominationParams.trailer_url = this.embedded_trailer;
       axios
         .patch("/nominations/" + this.$route.params.id, this.showNominationParams)
         .then((response) => {
@@ -34,7 +36,7 @@ export default {
       axios.post("/votes", this.newVoteParams).then((response) => {
         this.newVoteParams = response.data;
         console.log(response.data);
-        this.$router.push("/events/" + this.showNominationParams.event_id);
+        this.$router.push("/events/" + this.showNominationParams.event.id);
       });
     },
     findTrailer() {
@@ -46,7 +48,10 @@ export default {
 
 <template>
   <div class="home">
-    <h1>{{ showNominationParams.name }} ({{ showNominationParams.year }})</h1>
+    <h1>
+      <a :href="`/events/` + `${showNominationParams.event.id}`">{{ showNominationParams.event.name }}</a>
+      : {{ showNominationParams.name }} ({{ showNominationParams.year }})
+    </h1>
 
     <div v-if="showNominationParams.trailer_url && showNominationParams.trailer_url.length > 0">
       <iframe
@@ -54,6 +59,16 @@ export default {
         height="415"
         :src="`https://www.youtube.com/embed/${this.showNominationParams.youtube_id}`"
       ></iframe>
+    </div>
+    <div v-else>
+      Find
+      <a
+        :href="`https://www.youtube.com/results?search_query=trailer+${this.showNominationParams.name}+${this.showNominationParams.year}`"
+        target="_blank"
+        v-on:click="findTrailer()"
+      >
+        Trailer
+      </a>
     </div>
     <div>
       <p>Rated: {{ showNominationParams.rating }}</p>
@@ -65,17 +80,9 @@ export default {
       </p>
       <p>Plot: {{ showNominationParams.plot }}</p>
       <p>
-        Find
-        <a
-          :href="`https://www.youtube.com/results?search_query=trailer+${this.showNominationParams.name}`"
-          target="_blank"
-          v-on:click="findTrailer()"
-        >
-          Trailer
-        </a>
-        or
+        Search
         <a :href="`https://www.justwatch.com/us/search?q=${showNominationParams.name}`" target="_blank">
-          Streaming Service
+          Streaming Services
         </a>
       </p>
       <button v-on:click="votesCreate()">Vote for {{ showNominationParams.name }}!</button>
@@ -87,7 +94,7 @@ export default {
           <div>
             <p>
               Trailer URL:
-              <input v-model="showNominationParams.trailer_url" />
+              <input v-model="embedded_trailer" />
             </p>
             <span>
               <button v-on:click="nominationsUpdate()">Submit</button>

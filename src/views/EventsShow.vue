@@ -25,6 +25,13 @@ export default {
         console.log(response.data.nominations);
       });
     },
+    eventsUpdate() {
+      this.showEventParams.status = "closed";
+      axios.patch("/events/" + this.$route.params.id, this.showEventParams).then((response) => {
+        this.showEventParams = response.data;
+        console.log(response.data);
+      });
+    },
     searchMovie() {
       document.querySelector("#nomination-new").showModal();
       axios.get("/searches/" + this.searchParams).then((response) => {
@@ -49,12 +56,25 @@ export default {
 
 <template>
   <div class="home">
-    <h1>{{ showEventParams.name }}</h1>
-    <h2>Add Nomination</h2>
-    <input type="text" v-model="searchParams" />
-    <button v-on:click="searchMovie()">Search</button>
+    <h1>
+      <a :href="`/groups/` + `${showEventParams.group.id}`">{{ showEventParams.group.name }}</a>
+      : {{ showEventParams.name }} ({{ showEventParams.format_date }})
+    </h1>
+    <div v-if="showEventParams.status == 'open'">
+      <h2>Add Nomination</h2>
+      <input type="text" v-model="searchParams" />
+      <button v-on:click="searchMovie()">Search</button>
+    </div>
+    <div v-else>
+      <h2>Winner: {{ showEventParams.top_nomination.name }}</h2>
+    </div>
+    <div v-if="showEventParams.status === 'open'">
+      <p></p>
+      <button v-on:click="eventsUpdate()">Crown the Winner</button>
+    </div>
 
-    <h2>Current Nominations:</h2>
+    <h2 v-if="showEventParams.status == 'open'">Current Nominations:</h2>
+    <h2 v-else>Nominations</h2>
     <div v-for="nomination in nominations" :key="nomination.id">
       <a :href="`/nominations/` + `${nomination.id}`">{{ nomination.name }}</a>
       <span>&nbsp;Votes: {{ nomination.votes.length }}</span>
