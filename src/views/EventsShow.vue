@@ -38,8 +38,15 @@ export default {
         console.log(this.searchParams);
         this.searches = response.data.results;
         console.log(response.data.results);
-        this.searchParams = "";
       });
+    },
+    newRating() {
+      // document.querySelector("#nomination-new").showModal();
+      // axios.get("/searches/" + this.searchParams).then((response) => {
+      //   console.log(this.searchParams);
+      //   this.searches = response.data.results;
+      //   console.log(response.data.results);
+      // });
     },
     nominationsCreate(search) {
       this.newNominationParams.name = search.title;
@@ -64,13 +71,16 @@ export default {
       <h2>Add Nomination</h2>
       <input type="text" v-model="searchParams" />
       <button v-on:click="searchMovie()">Search</button>
+      <p v-if="showEventParams.top_nomination">
+        <button v-on:click="eventsUpdate()">Crown the Winner</button>
+      </p>
     </div>
     <div v-else>
       <h2>Winner: {{ showEventParams.top_nomination.name }}</h2>
-    </div>
-    <div v-if="showEventParams.status === 'open'">
-      <p></p>
-      <button v-on:click="eventsUpdate()">Crown the Winner</button>
+      <p>{{ showEventParams.group.name }} rating: 3/5</p>
+      <p>
+        <button v-on:click="newRating()">Rate {{ showEventParams.top_nomination.name }}</button>
+      </p>
     </div>
 
     <h2 v-if="showEventParams.status == 'open'">Current Nominations:</h2>
