@@ -2,7 +2,7 @@
 export default {
   data: function () {
     return {
-      message: "Get started by signing up or logging in!",
+      message: "Welcome to Buddy Ballots",
     };
   },
   created: function () {},

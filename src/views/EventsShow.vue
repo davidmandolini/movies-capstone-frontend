@@ -85,9 +85,26 @@ export default {
 
     <h2 v-if="showEventParams.status == 'open'">Current Nominations:</h2>
     <h2 v-else>Nominations</h2>
-    <div v-for="nomination in nominations" :key="nomination.id">
-      <a :href="`/nominations/` + `${nomination.id}`">{{ nomination.name }}</a>
-      <span>&nbsp;Votes: {{ nomination.votes.length }}</span>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div v-for="nomination in nominations" :key="nomination.id">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a :href="`/nominations/` + `${nomination.id}`">{{ nomination.name }}</a>
+              </h5>
+              <p class="card-text">
+                {{ nomination.plot }}
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Nominated by {{ nomination.user.username }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <span>&nbsp;Votes: {{ nomination.votes.length }}</span> -->
     </div>
     <dialog id="nomination-new">
       <form method="dialog">
