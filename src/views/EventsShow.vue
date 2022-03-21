@@ -103,8 +103,6 @@ export default {
           </div>
         </div>
       </div>
-
-      <!-- <span>&nbsp;Votes: {{ nomination.votes.length }}</span> -->
     </div>
     <dialog id="nomination-new">
       <form method="dialog">

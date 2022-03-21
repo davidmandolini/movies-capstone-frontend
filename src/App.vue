@@ -30,6 +30,9 @@ export default {
 </template>
 
 <style>
+body {
+  background-image: url("./assets/spikes.png");
+}
 h1 {
   font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
   font-size: 24px;
