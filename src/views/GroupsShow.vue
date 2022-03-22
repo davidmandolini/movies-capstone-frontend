@@ -58,7 +58,23 @@ export default {
 </template>
 
 <style>
-a:visited {
-  color: blue;
+a {
+  color: #333;
+}
+.home {
+  margin: 0 auto;
+  max-width: 50em;
+  line-height: 1.5;
+  padding: 4em 1em;
+  color: #555;
+}
+h2 {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+h1,
+h2,
+strong {
+  color: #333;
 }
 </style>

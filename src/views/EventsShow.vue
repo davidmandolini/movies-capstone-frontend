@@ -55,6 +55,7 @@ export default {
       this.ratingParams.value = parseInt(this.rating);
       axios.post("/user_ratings", this.ratingParams).then((response) => {
         console.log(response.data);
+        this.eventsShow();
       });
     },
     nominationsCreate(search) {
@@ -74,19 +75,24 @@ export default {
   <div class="home">
     <h1>
       <a :href="`/groups/` + `${showEventParams.group.id}`">{{ showEventParams.group.name }}</a>
-      : {{ showEventParams.name }} ({{ showEventParams.format_date }})
+      {{ showEventParams.name }} ({{ showEventParams.format_date }})
     </h1>
     <div v-if="showEventParams.status == 'open'">
       <h2>Add Nomination</h2>
       <input type="text" v-model="searchParams" />
       <button v-on:click="searchMovie()">Search</button>
+      <p></p>
       <p v-if="showEventParams.top_nomination">
         <button v-on:click="eventsUpdate()">Crown the Winner</button>
       </p>
     </div>
     <div v-else>
       <h2>Winner: {{ showEventParams.top_nomination.name }}</h2>
-      <p>{{ showEventParams.group.name }} rating: {{ showEventParams.top_nomination.average_rating }}</p>
+      <div v-for="nomination in nominations" :key="nomination.id">
+        <h3 v-if="nomination.average_rating">
+          {{ showEventParams.group.name }} rates this: {{ nomination.average_rating }} stars
+        </h3>
+      </div>
       <p>
         <button v-on:click="newRating()">Rate {{ showEventParams.top_nomination.name }}</button>
       </p>
@@ -174,7 +180,23 @@ export default {
 </template>
 
 <style>
-a:visited {
-  color: blue;
+a {
+  color: #e81c4f;
+}
+.home {
+  margin: 0 auto;
+  max-width: 50em;
+  line-height: 1.5;
+  padding: 4em 1em;
+  color: #555;
+}
+h2 {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+h1,
+h2,
+strong {
+  color: #333;
 }
 </style>
