@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+
 export default {
   data: function () {
     return {
@@ -12,6 +13,8 @@ export default {
       },
       errors: [],
       searchMessage: "",
+      rating: 0,
+      ratingParams: {},
     };
   },
   created: function () {
@@ -30,6 +33,7 @@ export default {
       axios.patch("/events/" + this.$route.params.id, this.showEventParams).then((response) => {
         this.showEventParams = response.data;
         console.log(response.data);
+        document.querySelector("#nomination-win").showModal();
       });
     },
     searchMovie() {
@@ -43,12 +47,15 @@ export default {
       });
     },
     newRating() {
-      // document.querySelector("#nomination-new").showModal();
-      // axios.get("/searches/" + this.searchParams).then((response) => {
-      //   console.log(this.searchParams);
-      //   this.searches = response.data.results;
-      //   console.log(response.data.results);
-      // });
+      document.querySelector("#nomination-rate").showModal();
+    },
+    ratingsPost() {
+      console.log(this.rating);
+      this.ratingParams.nomination_id = this.showEventParams.top_nomination.id;
+      this.ratingParams.value = parseInt(this.rating);
+      axios.post("/user_ratings", this.ratingParams).then((response) => {
+        console.log(response.data);
+      });
     },
     nominationsCreate(search) {
       this.newNominationParams.name = search.title;
@@ -79,7 +86,7 @@ export default {
     </div>
     <div v-else>
       <h2>Winner: {{ showEventParams.top_nomination.name }}</h2>
-      <p>{{ showEventParams.group.name }} rating: 3/5</p>
+      <p>{{ showEventParams.group.name }} rating: {{ showEventParams.top_nomination.average_rating }}</p>
       <p>
         <button v-on:click="newRating()">Rate {{ showEventParams.top_nomination.name }}</button>
       </p>
@@ -106,6 +113,8 @@ export default {
         </div>
       </div>
     </div>
+    <div id="container" style="width: 100%; height: 400px"></div>
+
     <dialog id="nomination-new">
       <form method="dialog">
         <div>
@@ -120,6 +129,45 @@ export default {
           <p></p>
           <button>Close</button>
         </div>
+      </form>
+    </dialog>
+    <dialog id="nomination-win">
+      <form method="dialog">
+        <h2>
+          And the winner is...
+          <b>{{ showEventParams.top_nomination.name }}</b>
+          !!!
+        </h2>
+        <p></p>
+        <button>Close</button>
+      </form>
+    </dialog>
+    <dialog id="nomination-rate">
+      <form method="dialog">
+        <h2>How many stars do you give {{ showEventParams.top_nomination.name }}?</h2>
+        <div class="form-check form-check-inline">
+          <input v-model="rating" class="form-check-input" type="radio" value="1" id="one" />
+          <label for="one">1 star</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input v-model="rating" class="form-check-input" type="radio" value="2" id="two" />
+          <label for="two">2 stars</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input v-model="rating" class="form-check-input" type="radio" value="3" id="three" />
+          <label for="three">3 stars</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input v-model="rating" class="form-check-input" type="radio" value="4" id="four" />
+          <label for="four">4 stars</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input v-model="rating" class="form-check-input" type="radio" value="5" id="five" />
+          <label for="five">5 stars</label>
+        </div>
+        <button v-on:click="ratingsPost()">Submit</button>
+
+        <button>Close</button>
       </form>
     </dialog>
   </div>
