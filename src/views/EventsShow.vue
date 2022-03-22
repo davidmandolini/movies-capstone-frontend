@@ -11,7 +11,7 @@ export default {
         event_id: this.$route.params.id,
       },
       errors: [],
-      loading: true,
+      searchMessage: "",
     };
   },
   created: function () {
@@ -33,11 +33,13 @@ export default {
       });
     },
     searchMovie() {
+      this.searchMessage = "Searching for movies...";
       document.querySelector("#nomination-new").showModal();
       axios.get("/searches/" + this.searchParams).then((response) => {
         console.log(this.searchParams);
         this.searches = response.data.results;
         console.log(response.data.results);
+        this.searchMessage = `Select from the ${response.data.results.length} result(s) below.`;
       });
     },
     newRating() {
@@ -107,7 +109,7 @@ export default {
     <dialog id="nomination-new">
       <form method="dialog">
         <div>
-          <h2>Select from the {{ searches.length }} search result(s)</h2>
+          <h2>{{ searchMessage }}</h2>
           <div v-for="search in searches" v-bind:key="search">
             <p></p>
             {{ search.title }} {{ search.description }}
