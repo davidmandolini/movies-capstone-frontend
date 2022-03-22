@@ -29,8 +29,18 @@ export default {
   <div class="home">
     <h1 v-if="error.status">{{ error.status }}: {{ error.statusText }}</h1>
     <h1 v-else>Your Groups</h1>
-    <div v-for="group in groups" :key="group.id">
-      <a :href="`/groups/` + `${group.id}`">{{ group.name }}</a>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div v-for="group in groups" :key="group.id">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a :href="`/groups/` + `${group.id}`">{{ group.name }}</a>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
