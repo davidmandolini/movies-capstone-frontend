@@ -27,11 +27,11 @@ export default {
 <template>
   <div class="home">
     <h1>{{ showGroupParams.name }}</h1>
-    <h2>Members:</h2>
+    <h2><u>Members</u></h2>
     <ul>
       <li v-for="member in members" :key="member">{{ member.username }}</li>
     </ul>
-    <h2>Events:</h2>
+    <h2><u>Events</u></h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="event in events" :key="event.id">
         <div class="col">
@@ -42,14 +42,9 @@ export default {
 
                 ({{ event.format_date }})
               </h5>
-
-              <!-- <p>{{ event.nominations.length }} nominations</p> -->
-              <span v-if="event.status === `closed`">
-                <p class="card-text">
-                  <b>Winner: {{ event.top_nomination.name }}</b>
-                </p>
-              </span>
             </div>
+            <div v-if="event.status === `closed`" class="card-footer">Winner: {{ event.top_nomination.name }}</div>
+            <!-- <p v-if="event.status === `open`">Total nominations: {{ event.nominations.length }}</p> -->
           </div>
         </div>
       </div>
@@ -59,7 +54,7 @@ export default {
 
 <style>
 a {
-  color: #333;
+  color: #555;
 }
 .home {
   margin: 0 auto;
@@ -76,5 +71,8 @@ h1,
 h2,
 strong {
   color: #333;
+}
+#right-align-button {
+  float: right;
 }
 </style>

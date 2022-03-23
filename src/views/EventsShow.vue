@@ -15,6 +15,7 @@ export default {
       searchMessage: "",
       rating: 0,
       ratingParams: {},
+      beginSearch: true,
     };
   },
   created: function () {
@@ -37,9 +38,11 @@ export default {
       });
     },
     searchMovie() {
+      this.beginSearch = true;
       this.searchMessage = "Searching for movies...";
       document.querySelector("#nomination-new").showModal();
       axios.get("/searches/" + this.searchParams).then((response) => {
+        this.beginSearch = false;
         console.log(this.searchParams);
         this.searches = response.data.results;
         console.log(response.data.results);
@@ -79,27 +82,28 @@ export default {
     </h1>
     <div v-if="showEventParams.status == 'open'">
       <h2>Add Nomination</h2>
-      <input type="text" v-model="searchParams" />
-      <button v-on:click="searchMovie()">Search</button>
+      <input type="text" class="form-control" v-model="searchParams" />
       <p></p>
-      <p v-if="showEventParams.top_nomination">
-        <button v-on:click="eventsUpdate()">Crown the Winner</button>
-      </p>
+      <button type="button" class="btn btn-primary" id="right-align-button" v-on:click="searchMovie()">Search</button>
+      <p></p>
     </div>
     <div v-else>
       <h2>Winner: {{ showEventParams.top_nomination.name }}</h2>
-      <div v-for="nomination in nominations" :key="nomination.id">
+      <span v-for="nomination in nominations" :key="nomination.id">
         <h3 v-if="nomination.average_rating">
           {{ showEventParams.group.name }} rates this: {{ nomination.average_rating }} stars
         </h3>
-      </div>
+      </span>
       <p>
-        <button v-on:click="newRating()">Rate {{ showEventParams.top_nomination.name }}</button>
+        <button class="btn btn-primary" v-on:click="newRating()">Rate {{ showEventParams.top_nomination.name }}</button>
       </p>
     </div>
 
     <h2 v-if="showEventParams.status == 'open'">Current Nominations:</h2>
     <h2 v-else>Nominations</h2>
+    <p v-if="showEventParams.top_nomination && showEventParams.status == 'open'">
+      <button class="btn btn-warning" v-on:click="eventsUpdate()"><b>Crown the Winner</b></button>
+    </p>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="nomination in nominations" :key="nomination.id">
         <div class="col">
@@ -125,15 +129,20 @@ export default {
       <form method="dialog">
         <div>
           <h2>{{ searchMessage }}</h2>
-          <div v-for="search in searches" v-bind:key="search">
-            <p></p>
-            {{ search.title }} {{ search.description }}
-            <span>
-              <button v-on:click="nominationsCreate(search)">Nominate</button>
-            </span>
+          <div v-if="!beginSearch">
+            <div v-for="search in searches" v-bind:key="search">
+              <p></p>
+              {{ search.title }} {{ search.description }}
+              <span>
+                <button class="btn btn-primary" id="right-align-button" v-on:click="nominationsCreate(search)">
+                  Nominate
+                </button>
+              </span>
+              <p></p>
+            </div>
           </div>
           <p></p>
-          <button>Close</button>
+          <button class="btn btn-primary">Close</button>
         </div>
       </form>
     </dialog>
@@ -145,7 +154,7 @@ export default {
           !!!
         </h2>
         <p></p>
-        <button>Close</button>
+        <button class="btn btn-primary">Close</button>
       </form>
     </dialog>
     <dialog id="nomination-rate">
@@ -171,9 +180,9 @@ export default {
           <input v-model="rating" class="form-check-input" type="radio" value="5" id="five" />
           <label for="five">5 stars</label>
         </div>
-        <button v-on:click="ratingsPost()">Submit</button>
+        <button class="btn btn-primary" v-on:click="ratingsPost()">Submit</button>
 
-        <button>Close</button>
+        <button class="btn btn-primary">Close</button>
       </form>
     </dialog>
   </div>
@@ -181,7 +190,7 @@ export default {
 
 <style>
 a {
-  color: #e81c4f;
+  color: #555;
 }
 .home {
   margin: 0 auto;
@@ -198,5 +207,8 @@ h1,
 h2,
 strong {
   color: #333;
+}
+#right-align-button {
+  float: right;
 }
 </style>
